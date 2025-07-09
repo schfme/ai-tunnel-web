@@ -13,22 +13,10 @@
 	<version>1.0.0</version>
 	<name>ai-tunnel-web</name>
 	<description>It&apos;s AI all the way down.</description>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
 	<properties>
 		<java.version>21</java.version>
 		<spring-ai.version>1.0.0</spring-ai.version>
+		<aws-sdk.version>2.31.68</aws-sdk.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -66,6 +54,11 @@
 		<dependency>
 			<groupId>org.springframework.ai</groupId>
 			<artifactId>spring-ai-commons</artifactId>
+		</dependency>
+				<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>ssm</artifactId>
+			<version>${aws-sdk.version}</version>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>

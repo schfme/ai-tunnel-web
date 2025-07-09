@@ -5,18 +5,26 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import jakarta.servlet.http.HttpServletRequest;
+import me.schf.ai.tunnel.web.service.AiHtmlGenerationService;
 
 @Controller
 public class ArbitraryPathController {
 
+	private final AiHtmlGenerationService aiHtmlGenerationService;
+
+	public ArbitraryPathController(AiHtmlGenerationService aiHtmlGenerationService) {
+		super();
+		this.aiHtmlGenerationService = aiHtmlGenerationService;
+	}
+
 	@GetMapping("/{path:.+}")
 	public String handleDynamicPath(HttpServletRequest request, Model model) {
-		String requestUri = request.getRequestURI().substring(1);
+		String requestUri = request.getRequestURI();
 
-		model.addAttribute("title", requestUri);
-		model.addAttribute("htmlContent", "generate me");
+		model.addAttribute("title", requestUri.substring(1));
+		model.addAttribute("htmlContent", aiHtmlGenerationService.generateHtmlFor(requestUri));
 
-		return "no-cache.html";
+		return "no-cache";
 	}
 
 }
