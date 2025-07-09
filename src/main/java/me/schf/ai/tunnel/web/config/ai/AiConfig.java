@@ -9,12 +9,15 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import me.schf.ai.tunnel.web.config.aws.AwsConfig.ParameterRetriever;
+import me.schf.ai.tunnel.web.config.parameter.ParameterNamesConfig;
+
 @Configuration
 public class AiConfig {
 
-	@Bean(name = "commandRequestChatClient")
-	ChatClient commandRequestChatClient(OpenAiChatModel openAiChatModel, String commandRequestSystemPrompt) {
-		return ChatClient.builder(openAiChatModel).defaultSystem(commandRequestSystemPrompt).build();
+	@Bean(name = "htmlGenerateChatClient")
+	ChatClient htmlGenerateChatClient(OpenAiChatModel openAiChatModel, String htmlGenerateSystemPrompt) {
+		return ChatClient.builder(openAiChatModel).defaultSystem(htmlGenerateSystemPrompt).build();
 	}
 
 	@Bean(name = "openAiChatModel")
@@ -39,9 +42,26 @@ public class AiConfig {
 				.apiKey(awsParameterRetriever.getParameter(parameterNamesConfig.getOpenAiApiKeyPath())).build();
 	}
 
-	@Bean(name = "commandRequestSystemPrompt")
-	String commandRequestSystemPrompt() {
-		return "";
+	@Bean(name = "htmlGenerateSystemPrompt")
+	String htmlGenerateSystemPrompt() {
+		return """
+				You are a skilled HTML generator. Your job is to generate only the contents that go inside <body> tags for a single-page HTML document.
+				Use only inline CSS for styling. Based on the given path in the user prompt, return informative or entertaining content relevant to that path.
+				The page must minimally include:
+
+				- A title at the top.
+				- One or two paragraphs of content related to the path with 3–5 links to other relative paths (under the same domain).
+				- A "Back" link that goes to the previous page using history.back().
+
+				The style of the page should be creative, interesting, and visually match the tone or theme of the content 
+				(e.g., fun topics can use bright colors and playful fonts; serious topics should be styled clean and minimal).
+
+				Do not include external scripts, stylesheets, or any links to external websites. Never include the full <html>, <head>, or <body> tags—only return the HTML that would go inside the <body>.
+
+				Make the content visually readable using inline CSS (e.g. padding, font styling, link color). All links must use relative paths like /topic1, /info/fun, etc.
+
+				Return only HTML. No explanations.
+				""";
 	}
 
 }
