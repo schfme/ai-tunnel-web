@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import jakarta.servlet.http.HttpServletRequest;
 import me.schf.ai.tunnel.web.service.AiHtmlGenerationService;
-import me.schf.ai.tunnel.web.util.Util;
+import me.schf.ai.tunnel.web.util.HtmlValidator;
+import me.schf.ai.tunnel.web.util.RandomWordGenerator;
 
 @Controller
 public class ArbitraryPathController {
@@ -26,7 +27,7 @@ public class ArbitraryPathController {
 	@GetMapping({ "", "/" })
 	public String handleRootRedirect(Model model) {
 		model.addAttribute("year", currentYear);
-		model.addAttribute("randomStartingPoints", Util.randomStartingPoints());
+		model.addAttribute("randomStartingPoints", RandomWordGenerator.randomStartingPoints());
 
 		return "about";
 	}
@@ -38,9 +39,20 @@ public class ArbitraryPathController {
 	    if (requestUri.matches(".*\\.(js|css|png|jpg|jpeg|ico|svg|woff|woff2|ttf|map)$")) {
 	        return null; // let spring handle these.
 	    }
+	    
+	    String aiGeneratedHtml = aiHtmlGenerationService.generateHtmlFor(requestUri);
+	    
+	    // make sure the robot is behaving.
+	    boolean isValidHtml = new HtmlValidator(aiGeneratedHtml)
+	    		.doesNotContainExternalLinks()
+	    		.isValid();
+	    
+	    if (!isValidHtml) {
+	    	throw new IllegalStateException("AI-generated HTML was no good: %s".formatted(aiGeneratedHtml));
+	    }
 
 		model.addAttribute("title", requestUri.substring(1));
-		model.addAttribute("htmlContent", aiHtmlGenerationService.generateHtmlFor(requestUri));
+		model.addAttribute("htmlContent", aiGeneratedHtml);
 
 		return "no-cache";
 	}
