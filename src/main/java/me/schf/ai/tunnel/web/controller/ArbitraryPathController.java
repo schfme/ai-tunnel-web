@@ -1,5 +1,7 @@
 package me.schf.ai.tunnel.web.controller;
 
+import java.time.LocalDate;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,15 +14,19 @@ import me.schf.ai.tunnel.web.util.Util;
 public class ArbitraryPathController {
 
 	private final AiHtmlGenerationService aiHtmlGenerationService;
+	private final String currentYear;
 
 	public ArbitraryPathController(AiHtmlGenerationService aiHtmlGenerationService) {
 		super();
 		this.aiHtmlGenerationService = aiHtmlGenerationService;
+		this.currentYear = String.valueOf(LocalDate.now().getYear());
 	}
 
 	@GetMapping({ "", "/" })
 	public String handleRootRedirect(Model model) {
+		model.addAttribute("year", currentYear);
 		model.addAttribute("randomStartingPoints", Util.randomStartingPoints());
+
 		return "about";
 	}
 
