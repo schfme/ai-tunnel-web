@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import jakarta.servlet.http.HttpServletRequest;
 import me.schf.ai.tunnel.web.service.AiHtmlGenerationService;
+import me.schf.ai.tunnel.web.util.Util;
 
 @Controller
 public class ArbitraryPathController {
@@ -17,7 +18,13 @@ public class ArbitraryPathController {
 		this.aiHtmlGenerationService = aiHtmlGenerationService;
 	}
 
-	@GetMapping("/{path:.+}")
+	@GetMapping({ "", "/" })
+	public String handleRootRedirect(Model model) {
+		model.addAttribute("randomStartingPoints", Util.randomStartingPoints());
+		return "about";
+	}
+
+	@GetMapping("/**")
 	public String handleDynamicPath(HttpServletRequest request, Model model) {
 		String requestUri = request.getRequestURI();
 

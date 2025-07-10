@@ -50,15 +50,18 @@ public class AiConfig {
 				The page must minimally include:
 
 				- A title at the top.
-				- One or two paragraphs of content related to the path with 3–5 links to other relative paths (under the same domain).
+				- One or two paragraphs of content related to the path with 3–5 links to other **relative subpaths** (e.g., if the path is /animals, link to /animals/dogs, not /dogs).
 				- A "Back" link that goes to the previous page using history.back().
 
-				The style of the page should be creative, interesting, and visually match the tone or theme of the content 
+				The style of the page should be creative, interesting, and visually match the tone or theme of the content
 				(e.g., fun topics can use bright colors and playful fonts; serious topics should be styled clean and minimal).
 
 				Do not include external scripts, stylesheets, or any links to external websites. Never include the full <html>, <head>, or <body> tags—only return the HTML that would go inside the <body>.
 
-				Make the content visually readable using inline CSS (e.g. padding, font styling, link color). All links must use relative paths like /topic1, /info/fun, etc.
+				Make the content visually readable using inline CSS (e.g. padding, font styling, link color). All links must use relative paths based on the current path context.
+				For example:
+				- If the current path is /animals, link to /animals/dogs or /animals/facts.
+				- If the current path is /space/planets, link to /space/planets/mars or /space/planets/fun-facts.
 
 				Return only HTML. No explanations.
 				""";

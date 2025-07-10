@@ -9,7 +9,6 @@ logging:
 app: 
   environment: test
   parameter-names:
-    api-keys-path: "/${spring.application.name}/${app.environment}/api-keys/"
     openAiApiKeyPath: "/openai/${spring.application.name}/${app.environment}/api-key"
 openai:
   chat: GPT_4_O_MINI
