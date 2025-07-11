@@ -32,13 +32,9 @@ public class ArbitraryPathController {
 		return "about";
 	}
 
-	@GetMapping(value = "/**", produces = MediaType.TEXT_HTML_VALUE)
+	@GetMapping(path = "/**", produces = MediaType.TEXT_HTML_VALUE)
 	public String handleDynamicPath(HttpServletRequest request, Model model) {
 		String requestUri = request.getRequestURI();
-		
-	    if (requestUri.matches(".*\\.(js|css|png|jpg|jpeg|ico|svg|woff|woff2|ttf|map)$")) {
-	        return null; // let spring handle these.
-	    }
 	    
 	    String aiGeneratedHtml = aiHtmlGenerationService.generateHtmlFor(requestUri);
 	    

@@ -16,16 +16,6 @@
 	padding: 0;
 	box-sizing: border-box;
 ">
-
-	<header style="
-		padding: 1rem 0;
-		font-size: 2.5rem;
-		font-weight: bold;
-		text-align: center;
-	">
-		ai tunnel
-	</header>
-
 	<main style="text-align: center; margin-top: 2rem;">
 
 		<section class="post-article" style="
@@ -34,21 +24,24 @@
 			margin: 0 auto;
 			padding: 1em;
 			color: #fbfbfb;
-			border: 2px solid #bcabae;
 		">
 			<h2 style="font-size: 2rem; margin: 1rem 0;">what is this?</h2>
 			<p>
 				<em><strong>AI tunnel</strong></em> is a small experiment in dynamic, AI-generated web
-				components. Every page you visit is temporary and created on the fly by the system.
+				components. Every page you visit is created on the fly.
 			</p>
 			<p>
-				No caching here, so if you revisit a page, like /dogs or /rain, it will look different
-				each time.
+				There’s no caching here — so if you revisit a page, like <code>/dogs</code> or <code>/rain</code>, it
+				will look different each time.
+			</p>
+			<p>
+				Each link brings you deeper down the tunnel, generating a new, unique page based on your
+				current path.
 			</p>
 		</section>
 
 		<section style="margin-top: 2rem;">
-			<h2 style="font-size: 2rem; margin: 1rem 0;">try a starting point</h2>
+			<h2 style="font-size: 2rem; margin: 1rem 0;">try starting here</h2>
 			<ul style="list-style: none; padding: 0; margin: 0;">
 				<li th:each="word : ${randomStartingPoints}" style="
 					display: inline-block;
@@ -66,7 +59,7 @@
 				</li>
 			</ul>
 			<p style="margin-top: 1rem; font-size: 0.9rem; color: #888;">
-				Happy tunneling, and be patient with loading times — each page is generated on the fly!
+				happy tunneling!
 			</p>
 		</section>
 	</main>
@@ -90,6 +83,7 @@
 			schf.me
 		</a>
 	</footer>
+	<script th:src="@{/js/vhs.js}"></script>
 
 </body>
 

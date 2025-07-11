@@ -12,9 +12,9 @@ public class HtmlValidator {
 	public HtmlValidator(String html) {
 		try {
 			this.doc = Jsoup.parse(html, "", Parser.htmlParser());
-	        if (!html.matches(".*<\\s*\\w+.*?>.*")) {
-	            valid = false; // no html tags (probably not html)
-	        }
+			if (doc.body().text().isEmpty()) {
+			    valid = false; // no visible content
+			}
 		} catch (Exception e) {
 			valid = false;
 		}
