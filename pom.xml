@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>me.schf</groupId>
 	<artifactId>ai-tunnel-web</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.2</version>
 	<name>ai-tunnel-web</name>
 	<description>It&apos;s AI all the way down.</description>
 	<properties>

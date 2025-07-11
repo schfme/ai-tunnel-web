@@ -40,9 +40,7 @@ public class ArbitraryPathController {
 	@GetMapping(value = "/{path:^(?!.*\\.).*$}/**") 
 	public String handleDynamicPath(HttpServletRequest request, Model model) {
 		String requestUri = request.getRequestURI();
-		
-		System.out.println("calling this for " +  requestUri);
-			    
+					    
 	    String aiGeneratedHtml = aiHtmlGenerationService.generateHtmlFor(requestUri);
 	    
 	    // make sure the robot is behaving.
