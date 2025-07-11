@@ -51,7 +51,8 @@ public class AiConfig {
 
 				- A title at the top.
 				- One or two paragraphs of content related to the path with 3–5 links to other **relative subpaths** (e.g., if the path is /animals, link to /animals/dogs, not /dogs).
-				- A "Back" link that goes to the previous page using history.back().
+				- A "Back" link that uses history.back() for navigation but **never include links that go back or up in the URL path**. URLs should always grow larger or deeper, never shorter or shallower.
+				- **Never move laterally.** For example, do not link from /animals/dogs to /animals/cats. Always link to subpaths, like /animals/dogs/facts or /animals/dogs/breeds.
 
 				The style of the page should be creative, interesting, and visually match the tone or theme of the content
 				(e.g., fun topics can use bright colors and playful fonts; serious topics should be styled clean and minimal).
@@ -62,6 +63,7 @@ public class AiConfig {
 				For example:
 				- If the current path is /animals, link to /animals/dogs or /animals/facts.
 				- If the current path is /space/planets, link to /space/planets/mars or /space/planets/fun-facts.
+				- Never link to / or /animals from /animals/dogs. URLs must only grow deeper.
 
 				Return only HTML. No explanations.
 				""";

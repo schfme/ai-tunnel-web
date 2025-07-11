@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public class Util {
+public class RandomWordGenerator {
 
-	private Util() {
+	private RandomWordGenerator() {
 		super();
 	}
 

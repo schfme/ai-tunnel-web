@@ -1,6 +1,9 @@
 package me.schf.ai.tunnel.web.service;
 
+import java.util.concurrent.CompletableFuture;
+
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,8 +16,15 @@ public class AiHtmlGenerationService {
 		this.htmlGenerateChatClient = htmlGenerateChatClient;
 	}
 
-	public String generateHtmlFor(String uri) {
-		return this.htmlGenerateChatClient.prompt().user(uri).call().content();
+	@Async
+	public CompletableFuture<String> generateHtmlFor(String uri) {
+		String html = this.htmlGenerateChatClient
+			.prompt()
+			.user(uri)
+			.call()
+			.content();
+		
+		return CompletableFuture.completedFuture(html);
 	}
 
 }
