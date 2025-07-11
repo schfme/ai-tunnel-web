@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8">
+	<title>error | ai tunnel</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" th:href="@{/styles.css}">
+	<link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon" />
+	<link rel="icon" th:href="@{/ai-tunnel.svg}" type="image/svg+xml" /></head>
+</head>
+
+</head>
+
+<body>
+	<header>
+		<h1>error</h1>
+		<nav aria-label="Main Navigation">
+			<a th:href="@{/}" class="hover-link" aria-label="Go to homepage">../</a>
+		</nav>
+	</header>
+
+	<main role="main" aria-labelledby="errorCode" aria-describedby="errorMessage">
+		<section>
+			<h2 th:inline="text" id="errorCode">[[${errorCode}]]</h2>
+			<p th:inline="text" id="errorMessage">[[${errorMessage}]]</p>
+		</section>
+	</main>
+
+	<footer>
+		<p th:inline="text">&copy; [[${year}]] michael schaefer. all rights reserved.</p>
+	</footer>
+
+	<script th:src="@{/vhs.js}"></script>
+</body>
+
+</html>

@@ -12,6 +12,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,8 +31,8 @@ public class RateLimitingFilter extends OncePerRequestFilter {
 		if (bucket.tryConsume(1)) {
 			filterChain.doFilter(request, response);
 		} else {
-			response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
-			response.getWriter().write("You're doing that too much! Try again later.");
+			request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, HttpStatus.TOO_MANY_REQUESTS.value());
+			request.getRequestDispatcher("/error").forward(request, response);
 		}
 	}
 
@@ -41,6 +42,18 @@ public class RateLimitingFilter extends OncePerRequestFilter {
 				.refillIntervally(10, Duration.ofSeconds(10))
 				.build();
 		return Bucket.builder().addLimit(limit).build();
+	}
+	
+	/*
+	 * Don't want to rate-limit static resources or we might break page styling.
+	 */
+	@Override
+	protected boolean shouldNotFilter(HttpServletRequest request) {
+		String path = request.getRequestURI();
+		return path.startsWith("/styles.css")
+			|| path.startsWith("/vhs.js")
+			|| path.startsWith("/favicon.ico")
+			|| path.startsWith("/ai-tunnel.svg/");
 	}
 
 }
