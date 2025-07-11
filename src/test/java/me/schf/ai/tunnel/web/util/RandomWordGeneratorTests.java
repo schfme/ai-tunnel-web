@@ -9,7 +9,7 @@ import java.util.Set;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
-public class RandomWordGeneratorTests {
+class RandomWordGeneratorTests {
 	
 	@Test
 	void test_randomStartingPoints_hasSize5() {

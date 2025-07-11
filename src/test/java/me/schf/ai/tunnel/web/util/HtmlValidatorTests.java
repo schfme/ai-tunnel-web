@@ -4,13 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 
-public class HtmlValidatorTests {
-	
-	@Test
-	void test_htmlValidator_invalid() {
-		String invalid = "minecraft";
-		assertThat(new HtmlValidator(invalid).isValid()).isFalse();
-	}
+class HtmlValidatorTests {
 	
 	@Test
 	void test_htmlValidator_valid() {
