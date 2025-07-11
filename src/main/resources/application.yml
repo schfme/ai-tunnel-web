@@ -7,6 +7,9 @@ logging:
   level:
     root: ERROR
 app: 
+  rate-limit:
+    duration: 10s # refill interval duration
+    capacity: 10 # number of requests before throttling
   environment: test
   parameter-names:
     openAiApiKeyPath: "/openai/${spring.application.name}/${app.environment}/api-key"

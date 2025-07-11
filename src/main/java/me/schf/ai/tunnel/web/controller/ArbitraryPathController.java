@@ -1,10 +1,12 @@
 package me.schf.ai.tunnel.web.controller;
 
 import java.time.LocalDate;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.servlet.http.HttpServletRequest;
 import me.schf.ai.tunnel.web.service.AiHtmlGenerationService;
@@ -37,25 +39,23 @@ public class ArbitraryPathController {
 	 * So URLs like /minecraft/blocks but requests for static assets like /image.png
 	 * do not.
 	 */
-	@GetMapping(value = "/{path:^(?!.*\\.).*$}/**") 
-	public String handleDynamicPath(HttpServletRequest request, Model model) {
+	@GetMapping(value = "/{path:^(?!.*\\.).*$}/**")
+	public CompletableFuture<ModelAndView> handleDynamicPath(HttpServletRequest request) {
 		String requestUri = request.getRequestURI();
-					    
-	    String aiGeneratedHtml = aiHtmlGenerationService.generateHtmlFor(requestUri);
-	    
-	    // make sure the robot is behaving.
-	    boolean isValidHtml = new HtmlValidator(aiGeneratedHtml)
-	    		.doesNotContainExternalLinks()
-	    		.isValid();
-	    
-	    if (!isValidHtml) {
-	    	throw new IllegalStateException("AI-generated HTML was no good: %s".formatted(aiGeneratedHtml));
-	    }
 
-		model.addAttribute("title", requestUri.substring(1));
-		model.addAttribute("htmlContent", aiGeneratedHtml);
+		return aiHtmlGenerationService.generateHtmlFor(requestUri).thenApply(aiGeneratedHtml -> {
+			boolean isValidHtml = new HtmlValidator(aiGeneratedHtml)
+				.doesNotContainExternalLinks()
+				.isValid();
 
-		return "no-cache";
+			if (!isValidHtml) {
+				throw new IllegalStateException("AI-generated HTML was no good: %s".formatted(aiGeneratedHtml));
+			}
+
+			ModelAndView mav = new ModelAndView("no-cache");
+			mav.addObject("title", requestUri.substring(1));
+			mav.addObject("htmlContent", aiGeneratedHtml);
+			return mav;
+		});
 	}
-
 }

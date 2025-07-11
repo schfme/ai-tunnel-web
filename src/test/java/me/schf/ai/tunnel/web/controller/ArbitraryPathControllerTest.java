@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.servlet.http.HttpServletRequest;
 import me.schf.ai.tunnel.web.service.AiHtmlGenerationService;
@@ -46,18 +48,24 @@ class ArbitraryPathControllerTest {
 	}
 
 	@Test
-	void test_handleDynamicPath_addsTitleAndHtmlContentAndReturnsNoCache() {
-		String requestUri = "/some/path";
-		String generatedHtml = "<html>Generated</html>";
+	void test_handleDynamicPath_addsTitleAndHtmlContentAndReturnsNoCache() throws Exception {
+	    String requestUri = "/some/path";
+	    String generatedHtml = "<html>Generated</html>";
 
-		when(request.getRequestURI()).thenReturn(requestUri);
-		when(aiHtmlGenerationService.generateHtmlFor(requestUri)).thenReturn(generatedHtml);
+	    when(request.getRequestURI()).thenReturn(requestUri);
 
-		String view = controller.handleDynamicPath(request, model);
+	    when(aiHtmlGenerationService.generateHtmlFor(requestUri))
+	        .thenReturn(CompletableFuture.completedFuture(generatedHtml));
 
-		verify(request).getRequestURI();
-		verify(model).addAttribute("title", "some/path");
-		verify(model).addAttribute("htmlContent", generatedHtml);
-		assertEquals("no-cache", view);
+	    CompletableFuture<ModelAndView> futureView = controller.handleDynamicPath(request);
+
+	    ModelAndView mav = futureView.get();  // throws InterruptedException, ExecutionException
+
+	    verify(request).getRequestURI();
+
+	    assertEquals("no-cache", mav.getViewName());
+
+	    assertEquals("some/path", mav.getModel().get("title"));
+	    assertEquals(generatedHtml, mav.getModel().get("htmlContent"));
 	}
 }
