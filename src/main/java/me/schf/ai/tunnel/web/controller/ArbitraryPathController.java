@@ -2,7 +2,6 @@ package me.schf.ai.tunnel.web.controller;
 
 import java.time.LocalDate;
 
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,10 +31,16 @@ public class ArbitraryPathController {
 		return "about";
 	}
 
-	@GetMapping(path = "/**", produces = MediaType.TEXT_HTML_VALUE)
+	/*
+	 * {path:^(?!.*\\.).*$} matches a path segment with no dots (no file
+	 * extensions). The trailing /** allows any nested sub-paths after that segment.
+	 * So URLs like /minecraft/blocks but requests for static assets like /image.png
+	 * do not.
+	 */
+	@GetMapping(value = "/{path:^(?!.*\\.).*$}/**") 
 	public String handleDynamicPath(HttpServletRequest request, Model model) {
 		String requestUri = request.getRequestURI();
-	    
+			    
 	    String aiGeneratedHtml = aiHtmlGenerationService.generateHtmlFor(requestUri);
 	    
 	    // make sure the robot is behaving.

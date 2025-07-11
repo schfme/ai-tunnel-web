@@ -1,0 +1,101 @@
+/* =====================
+   root/global
+===================== */
+:root {
+	--bg: #0f0f0f;
+	--text: #fbfbfb;
+	--acc: #bcabae;
+	--ann: #abbcb9;
+	font-size: 16px;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	width: 100%;
+	max-width: 100vw;
+	overflow-x: hidden;
+	overflow-y: auto;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	font-family: monospace;
+	background: var(--bg);
+	color: var(--text);
+	position: relative;
+}
+
+/* =====================
+   layout
+===================== */
+main {
+	text-align: center;
+	margin-top: 2rem;
+}
+
+.post-article {
+	text-align: left;
+	max-width: 700px;
+	margin: 0 auto;
+	padding: 1em;
+	color: var(--text);
+}
+
+.start-section {
+	margin-top: 2rem;
+}
+
+.happy-tunneling {
+	margin-top: 1rem;
+	font-size: 0.9rem;
+	color: var(--ann);
+}
+
+/* =====================
+   links list styling
+===================== */
+ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+ul li {
+	display: inline-block;
+	margin: 0 0.7rem 0.7rem 0;
+}
+
+a.hover-link,
+a {
+	color: var(--acc);
+	text-decoration: none;
+	transition: transform 0.1s ease, color 0.1s ease;
+	word-break: break-word;
+	white-space: nowrap;
+	display: inline-block;
+}
+
+a.hover-link:hover,
+a:hover {
+	color: var(--text);
+	transform: scale(1.1);
+}
+
+/* =====================
+   footer
+===================== */
+footer {
+	text-align: center;
+	margin-top: 2rem;
+	padding: 1rem 0;
+	font-size: 0.9rem;
+	background: var(--bg);
+	color: var(--text);
+}
